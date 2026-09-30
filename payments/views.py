@@ -34,9 +34,9 @@ class TransferView(FormView):
         except InvalidAmountError:
             form.add_error("amount", "Amount must be greater than zero.")
         except SameAccountError as error:
-            form.add_error("account_to", str(error))
+            form.add_error("account_to", "You cannot transfer to the same account.")
         except NotEnoughMoneyError as error:
-            form.add_error("amount", str(error))
+            form.add_error("amount", "Not enough money.")
         except TransferServiceError as error:
             logger.exception(error)
             form.add_error(None, "Transfer failed. Please try again later.")

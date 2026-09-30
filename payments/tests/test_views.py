@@ -7,7 +7,8 @@ from django.urls import reverse
 from base.tests.factories import BankAccountFactory
 from payments.forms import BankTransferForm
 from payments.models import BankAccount
-from payments.services import TransferService, InvalidAmountError, SameAccountError, NotEnoughMoneyError
+from payments.services import TransferService, InvalidAmountError, SameAccountError, NotEnoughMoneyError, \
+    TransferServiceError
 
 
 class TestTransferView(TestCase):
@@ -45,6 +46,7 @@ class TestTransferView(TestCase):
             InvalidAmountError(),
             SameAccountError(),
             NotEnoughMoneyError(),
+            TransferServiceError(),
         ]
 
         for error in errors:
@@ -67,3 +69,5 @@ class TestTransferView(TestCase):
                         self.assertFormError(response.context["form"], "account_to", "You cannot transfer to the same account.")
                     case NotEnoughMoneyError():
                         self.assertFormError(response.context["form"], "amount", "Not enough money.")
+                    case TransferServiceError():
+                        self.assertFormError(response.context["form"], None, "Transfer failed. Please try again later.")
