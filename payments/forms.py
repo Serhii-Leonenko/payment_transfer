@@ -28,4 +28,4 @@ class BankTransferForm(forms.Form):
     def clean_amount(self) -> int:
         amount = self.cleaned_data['amount']
 
-        return amount * 100
+        return int(amount * 100)
