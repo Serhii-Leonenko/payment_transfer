@@ -12,4 +12,4 @@ class BankAccount(models.Model):
     )
 
     def __str__(self):
-        return f"{self.user.username}: balance: {self.balance}"
+        return f"{self.user.username}: balance: {self.balance / 100}"

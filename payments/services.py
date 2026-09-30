@@ -1,4 +1,4 @@
-from django.db import IntegrityError, transaction
+from django.db import transaction
 from django.db.models import F
 
 from payments.models import BankAccount
@@ -30,7 +30,10 @@ class TransferService:
         amount: int,
     ) -> None:
         if amount <= 0:
-            raise InvalidAmountError("Not enough money.")
+            raise InvalidAmountError(
+                f"account_from: {amount} balance: {account_from.balance}. "
+                f"Amount is lover than or equal to zero."
+            )
 
         if account_from.pk == account_to.pk:
             raise SameAccountError("You can't transfer to the same account.")
